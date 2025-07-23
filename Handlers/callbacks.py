@@ -1,7 +1,7 @@
 import logging
 from telegram import Update
 from telegram.ext import CallbackContext, CallbackQueryHandler
-from keyboards import main_menu_keyboard, back_to_menu_keyboard, booking_keyboard
+from .keyboards import main_menu_keyboard, back_to_menu_keyboard, booking_keyboard
 from config import config
 
 logger = logging.getLogger(__name__)

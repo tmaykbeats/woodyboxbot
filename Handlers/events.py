@@ -1,22 +1,21 @@
 import logging
 from telegram import Update
 from telegram.ext import CallbackContext, MessageHandler, filters
-from services.welcome import send_welcome_message
+from .messages import send_main_menu
 from config import CHANNEL_ID
 
 logger = logging.getLogger(__name__)
 
 async def handle_new_members(update: Update, context: CallbackContext) -> None:
-    """Обработка новых участников канала"""
+    """Обработка новых участников канала - отправляем главное меню"""
     try:
         for member in update.message.new_chat_members:
-            # Игнорируем самого бота
             if member.id == context.bot.id:
                 continue
                 
-            # Пытаемся отправить приветственное сообщение
-            if not await send_welcome_message(member.id, context):
-                logger.info(f"Не удалось отправить ЛС пользователю {member.id}")
+            # Отправляем сразу главное меню
+            await send_main_menu(member.id, context)
+            logger.info(f"Главное меню отправлено новому участнику {member.id}")
                 
     except Exception as e:
         logger.error(f"Ошибка обработки новых участников: {e}")
