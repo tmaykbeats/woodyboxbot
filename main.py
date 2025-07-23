@@ -4,6 +4,8 @@ from config import BOT_TOKEN
 from handlers.commands import get_commands_handlers
 from handlers.callbacks import get_callbacks_handlers
 from handlers.events import get_events_handlers
+import sys
+sys.path.append('utils')  # Добавляем путь к папке utils
 
 # Настройка логов
 logging.basicConfig(

@@ -1,7 +1,7 @@
 import logging
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup  # Добавьте этот импорт
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
-from config import CHANNEL_ID
+from config import CHANNEL_ID, config
 
 logger = logging.getLogger(__name__)
 
@@ -10,20 +10,24 @@ async def notify_user_in_channel(user_id: int, context: CallbackContext):
     try:
         logger.info(f"Отправка уведомления в канал для пользователя {user_id}")
         
+        # Пытаемся получить информацию о пользователе
+        try:
+            user_chat = await context.bot.get_chat(user_id)
+            user_name = user_chat.username or user_chat.full_name
+        except:
+            user_name = f"пользователь с ID {user_id}"
+        
         # Формируем текст сообщения
         text = (
-            "Привет! Основатель WoodyBoxRec пытался отправить вам важное сообщение.\n\n"
-            "Пожалуйста, выполните следующие шаги:\n"
-            "1. Перейдите в [Настройки конфиденциальности](https://t.me/settings/privacy)\n"
-            "2. В разделе 'Группы и каналы' выберите 'Кто может приглашать меня в группы и каналы?'\n"
-            "3. Установите 'Все'\n\n"
-            "После этого нажмите кнопку ниже, чтобы получить сообщение:"
+            f"Привет, {user_name}! 🎤\n"
+            "Мы пытались отправить вам приветственное сообщение, но не смогли.\n\n"
+            "Чтобы получить важную информацию, нажмите кнопку ниже:"
         )
         
         keyboard = [
             [InlineKeyboardButton(
-                "🔓 Получить приветственное сообщение", 
-                url=f"https://t.me/{context.bot.username}?start=welcome"
+                "🚀 Start", 
+                url=f"https://t.me/{context.bot.username}?start=init"
             )]
         ]
         

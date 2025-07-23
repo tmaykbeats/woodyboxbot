@@ -1,23 +1,35 @@
 import logging
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext, CommandHandler
 from keyboards import main_menu_keyboard
+from utils.messages import send_main_menu
 
 logger = logging.getLogger(__name__)
+
+async def send_main_menu(user_id: int, context: CallbackContext):
+    """Отправка главного меню"""
+    try:
+        await context.bot.send_message(
+            chat_id=user_id,
+            text="Добро пожаловать! Выберите действие:",
+            reply_markup=main_menu_keyboard()
+        )
+        return True
+    except Exception as e:
+        logger.error(f"Ошибка при отправке главного меню: {e}")
+        return False
 
 async def start(update: Update, context: CallbackContext) -> None:
     """Обработка команды /start"""
     logger.debug(f"Получена команда /start от пользователя {update.effective_user.id}")
-    
     user = update.effective_user
+    
     try:
-        await update.message.reply_text(
-            "Привет! Я помощник студии WoodyBox Rec.\nВыберите действие:",
-            reply_markup=main_menu_keyboard()
-        )
-        logger.info(f"Ответ на /start отправлен пользователю {user.id}")
+        # Всегда отправляем главное меню
+        await send_main_menu(user.id, context)
+        logger.info(f"Главное меню отправлено пользователю {user.id}")
     except Exception as e:
-        logger.error(f"Ошибка при отправке приветствия: {e}")
+        logger.error(f"Ошибка при обработке /start: {e}")
 
 async def test(update: Update, context: CallbackContext):
     """Тестовая команда для проверки отправки сообщений"""

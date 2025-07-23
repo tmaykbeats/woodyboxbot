@@ -9,22 +9,15 @@ logger = logging.getLogger(__name__)
 async def handle_new_members(update: Update, context: CallbackContext) -> None:
     """Обработка новых участников канала"""
     try:
-        logger.info(f"Получено обновление: {update}")
-        logger.info(f"Новые участники: {update.message.new_chat_members}")
-        
-        # Для каждого нового участника
         for member in update.message.new_chat_members:
-            logger.info(f"Новый участник: {member.id} ({member.username})")
-            
-            # Игнорируем, если это сам бот
+            # Игнорируем самого бота
             if member.id == context.bot.id:
-                logger.info("Бот добавлен в канал")
-                await update.message.reply_text("Бот активирован! Ожидаю новых участников.")
                 continue
                 
             # Пытаемся отправить приветственное сообщение
-            await send_welcome_message(member.id, context)
-            
+            if not await send_welcome_message(member.id, context):
+                logger.info(f"Не удалось отправить ЛС пользователю {member.id}")
+                
     except Exception as e:
         logger.error(f"Ошибка обработки новых участников: {e}")
 
