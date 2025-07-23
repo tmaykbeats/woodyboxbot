@@ -1,4 +1,5 @@
 import logging
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup  # Добавьте этот импорт
 from telegram.ext import CallbackContext
 from config import CHANNEL_ID
 
@@ -20,8 +21,10 @@ async def notify_user_in_channel(user_id: int, context: CallbackContext):
         )
         
         keyboard = [
-            [InlineKeyboardButton("🔓 Получить приветственное сообщение", 
-                                 url=f"https://t.me/{context.bot.username}?start=welcome")]
+            [InlineKeyboardButton(
+                "🔓 Получить приветственное сообщение", 
+                url=f"https://t.me/{context.bot.username}?start=welcome"
+            )]
         ]
         
         await context.bot.send_message(

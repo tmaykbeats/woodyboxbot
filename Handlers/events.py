@@ -2,6 +2,7 @@ import logging
 from telegram import Update
 from telegram.ext import CallbackContext, MessageHandler, filters
 from services.welcome import send_welcome_message
+from config import CHANNEL_ID
 
 logger = logging.getLogger(__name__)
 
