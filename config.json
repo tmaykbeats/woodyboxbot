@@ -1,0 +1,14 @@
+{
+  "services": {
+    "Запись вокала": "1500₽/час",
+    "Сведение": "2000₽/трек",
+    "Мастеринг": "2500₽/трек"
+  },
+  "info_content": {
+    "Анонсы": "https://t.me/studio_announcements",
+    "Аудиокнига основателя": "https://example.com/audiobook",
+    "FAQ": "https://example.com/faq"
+  },
+  "booking_text": "Для бронирования времени:",
+  "booking_link": "https://t.me/your_studio_manager"
+}
