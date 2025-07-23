@@ -175,18 +175,12 @@ def main() -> None:
 
         # Обработчики команд
         application.add_handler(CommandHandler("start", start))
-        application.add_handler(CommandHandler("test", test))  # Добавлено здесь
-        
-        # Обработка новых участников канала - ИСПРАВЛЕННЫЙ ФИЛЬТР
+        application.add_handler(CommandHandler("test", test))
         application.add_handler(MessageHandler(
             filters.Chat(chat_id=CHANNEL_ID) & filters.StatusUpdate.NEW_CHAT_MEMBERS,
             handle_new_members
         ))
-        
-        # Обработка кнопок
         application.add_handler(CallbackQueryHandler(button_handler))
-        
-        # Обработка ошибок
         application.add_error_handler(error_handler)
 
         # Запуск бота
