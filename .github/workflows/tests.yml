@@ -5,13 +5,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.13.5'
-    - name: Install dependencies
+        python-version: '3.12'  # Стабильная LTS-версия
+
+    - name: Install system dependencies
       run: |
-        pip install -r requirements.txt
-        pip install pytest pytest-asyncio pytest-mock
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg  # Для работы pydub
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-asyncio pytest-mock  # Только для тестов
+        pip install python-telegram-bot==22.3 dotenv  # Основные зависимости
+
     - name: Run tests
-      run: pytest tests/
+      env:
+        CHANNEL_ID: "-1001234567890"  # Тестовый ID канала
+        ADMIN_ID: "654321"            # Тестовый ID администратора
+      run: |
+        pytest -v tests/  # Подробный вывод тестов
