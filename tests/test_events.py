@@ -4,7 +4,7 @@ from handlers.events import handle_new_members
 from config import config
 
 @pytest.mark.asyncio
-async def test_new_member_event(mock_update, mock_context, monkeypatch, caplog):
+async def test_new_member_event(mock_update: MagicMock, mock_context: MagicMock, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     # Устанавливаем уровень логирования для захвата DEBUG
     caplog.set_level("DEBUG")
     
@@ -45,7 +45,7 @@ async def test_new_member_event(mock_update, mock_context, monkeypatch, caplog):
         mock_send_menu.assert_awaited_once_with(999, mock_context)
 
 @pytest.mark.asyncio
-async def test_new_member_wrong_channel(mock_update, mock_context, monkeypatch):
+async def test_new_member_wrong_channel(mock_update: MagicMock, mock_context: MagicMock, monkeypatch: pytest.MonkeyPatch):
     # Устанавливаем ID канала
     monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
     
