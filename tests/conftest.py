@@ -1,18 +1,31 @@
-# tests/conftest.py
 import pytest
 from unittest.mock import MagicMock, AsyncMock
-from telegram import User, Update, Message, Chat, CallbackQuery
 
 @pytest.fixture
 def mock_update():
-    update = MagicMock(spec=Update)
-    update.effective_user = User(id=123, first_name="Test", is_bot=False)
-    update.callback_query = CallbackQuery(id="test_query", from_user=update.effective_user)
-    update.message = Message(
-        message_id=456, 
-        chat=Chat(id=789, type='channel'), 
-        from_user=update.effective_user
-    )
+    update = MagicMock()
+    
+    # Настраиваем effective_user
+    user = MagicMock()
+    user.id = 123
+    user.first_name = "Test"
+    user.is_bot = False
+    update.effective_user = user
+    
+    # Настраиваем callback_query с AsyncMock
+    callback_query = AsyncMock()
+    callback_query.data = None
+    callback_query.edit_message_text = AsyncMock()
+    update.callback_query = callback_query
+    
+    # Настраиваем message
+    message = MagicMock()
+    message.new_chat_members = []
+    message.chat = MagicMock()  # Добавляем объект чата
+    message.chat.id = 12345     # Устанавливаем ID по умолчанию
+    
+    update.message = message
+    
     return update
 
 @pytest.fixture
@@ -20,11 +33,14 @@ def mock_context():
     context = MagicMock()
     context.bot = MagicMock()
     context.bot.username = "test_bot"
+    context.bot.id = 123  # ID бота
     context.bot.send_message = AsyncMock()
     context.bot.edit_message_text = AsyncMock()
-    context.bot.get_chat = AsyncMock(return_value=User(id=123, first_name="Test"))
+    
+    # Настраиваем get_chat
+    chat_user = MagicMock()
+    chat_user.id = 123
+    chat_user.username = "test_user"
+    context.bot.get_chat = AsyncMock(return_value=chat_user)
+    
     return context
-
-@pytest.fixture
-def mock_user():
-    return User(id=123, first_name="Test", is_bot=False)
