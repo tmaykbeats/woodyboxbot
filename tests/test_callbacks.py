@@ -13,7 +13,8 @@ async def test_prices_button(mock_update, mock_context):
         callbacks_module.config = {
             'services': {"Тест": "1000₽"},
             'booking_text': "Бронирование",
-            'info_content': {}
+            'info_content': {},
+            'booking_link': "https://your-booking-link.com"  # Добавьте эту строку
         }
         
         # Устанавливаем данные callback

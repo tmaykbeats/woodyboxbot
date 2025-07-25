@@ -27,7 +27,7 @@ async def test_new_member_event(mock_update: MagicMock, mock_context: MagicMock,
     # Устанавливаем новых участников
     mock_update.message.new_chat_members = [new_user]
     
-    with patch('handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+    with patch('src.handlers.messages.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
         # Запускаем обработчик
         await handle_new_members(mock_update, mock_context)
         
@@ -74,10 +74,10 @@ async def test_new_member_is_bot(mock_update, mock_context, monkeypatch, caplog)
     bot_user.is_bot = True
     mock_update.message.new_chat_members = [bot_user]
     
-    with patch('handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+    with patch('src.handlers.messages.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
         await handle_new_members(mock_update, mock_context)
         mock_send_menu.assert_not_awaited()
-        assert "Пропускаем бота" in caplog.text
+        assert any("Пропускаем бота" in record.message for record in caplog.records)
 
 # Тест для случая, когда добавляется несколько участников
 @pytest.mark.asyncio
@@ -89,6 +89,6 @@ async def test_multiple_new_members(mock_update, mock_context, monkeypatch):
     user2 = MagicMock(id=102, first_name="User2", is_bot=False)
     mock_update.message.new_chat_members = [user1, user2]
     
-    with patch('handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+    with patch('src.handlers.messages.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
         await handle_new_members(mock_update, mock_context)
         assert mock_send_menu.call_count == 2
