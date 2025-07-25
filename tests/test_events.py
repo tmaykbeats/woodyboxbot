@@ -61,3 +61,34 @@ async def test_new_member_wrong_channel(mock_update: MagicMock, mock_context: Ma
     with patch('src.handlers.messages.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
         await handle_new_members(mock_update, mock_context)
         mock_send_menu.assert_not_awaited()
+
+# Тест для случая, когда новый участник - это сам бот
+@pytest.mark.asyncio
+async def test_new_member_is_bot(mock_update, mock_context, monkeypatch, caplog):
+    monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
+    mock_update.message.chat.id = 12345
+    
+    # Бот добавляет самого себя
+    bot_user = MagicMock()
+    bot_user.id = mock_context.bot.id
+    bot_user.is_bot = True
+    mock_update.message.new_chat_members = [bot_user]
+    
+    with patch('handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+        await handle_new_members(mock_update, mock_context)
+        mock_send_menu.assert_not_awaited()
+        assert "Пропускаем бота" in caplog.text
+
+# Тест для случая, когда добавляется несколько участников
+@pytest.mark.asyncio
+async def test_multiple_new_members(mock_update, mock_context, monkeypatch):
+    monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
+    mock_update.message.chat.id = 12345
+    
+    user1 = MagicMock(id=101, first_name="User1", is_bot=False)
+    user2 = MagicMock(id=102, first_name="User2", is_bot=False)
+    mock_update.message.new_chat_members = [user1, user2]
+    
+    with patch('handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+        await handle_new_members(mock_update, mock_context)
+        assert mock_send_menu.call_count == 2
