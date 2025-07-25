@@ -6,6 +6,7 @@ def main_menu_keyboard():
     keyboard = [
         [InlineKeyboardButton("💰 Прайс-лист", callback_data='prices')],
         [InlineKeyboardButton("ℹ️ Полезная информация", callback_data='info')],
+        [InlineKeyboardButton("🛒 Товары", callback_data='products')],  # Новая кнопка
         [InlineKeyboardButton("📞 Связаться с нами", url=config['booking_link'])]
     ]
     return InlineKeyboardMarkup(keyboard)
