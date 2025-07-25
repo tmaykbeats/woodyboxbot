@@ -1,6 +1,6 @@
 import logging
 from telegram.ext import CallbackContext
-from ..handlers.keyboards import main_menu_keyboard
+from src.handlers.keyboards import main_menu_keyboard  # Изменено
 
 logger = logging.getLogger(__name__)
 

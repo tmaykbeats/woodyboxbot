@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import patch, AsyncMock, MagicMock
 from src.handlers.events import handle_new_members
 from src.config import config
+from src.handlers.callbacks import button_handler
 
 @pytest.mark.asyncio
 async def test_new_member_event(mock_update: MagicMock, mock_context: MagicMock, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
@@ -57,6 +58,6 @@ async def test_new_member_wrong_channel(mock_update: MagicMock, mock_context: Ma
     new_user.id = 999
     mock_update.message.new_chat_members = [new_user]
     
-    with patch('handlers.messages.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+    with patch('src.handlers.messages.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
         await handle_new_members(mock_update, mock_context)
         mock_send_menu.assert_not_awaited()
