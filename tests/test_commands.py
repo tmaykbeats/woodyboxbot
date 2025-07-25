@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, AsyncMock
-from handlers.commands import start
+from src.handlers.commands import start
 
 @pytest.mark.asyncio
 async def test_start_command(mock_update, mock_context):

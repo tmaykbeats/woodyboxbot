@@ -2,7 +2,7 @@ import logging
 from telegram import Update
 from telegram.ext import CallbackContext, MessageHandler, filters
 from .messages import send_main_menu
-from config import config
+from ..config import config
 
 logger = logging.getLogger(__name__)
 

@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, AsyncMock, MagicMock
-from handlers.events import handle_new_members
-from config import config
+from src.handlers.events import handle_new_members
+from src.config import config
 
 @pytest.mark.asyncio
 async def test_new_member_event(mock_update: MagicMock, mock_context: MagicMock, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):

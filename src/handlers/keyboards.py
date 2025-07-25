@@ -1,5 +1,5 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from config import config
+from src.config import config
 
 def main_menu_keyboard():
     """Клавиатура главного меню"""

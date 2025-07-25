@@ -1,8 +1,8 @@
 import logging
 from telegram import Update
 from telegram.ext import CallbackContext, CommandHandler
-from .keyboards import main_menu_keyboard  # Относительный импорт
-from .messages import send_main_menu  # Относительный импорт
+from ..handlers.keyboards import main_menu_keyboard
+from ..handlers.messages import send_main_menu
 
 logger = logging.getLogger(__name__)
 

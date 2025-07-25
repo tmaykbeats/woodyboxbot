@@ -1,0 +1,12 @@
+{
+    "python.analysis.extraPaths": [
+        "src",
+        "src/handlers"
+    ],
+    "python.testing.pytestArgs": [
+        "tests",
+        "--rootdir=src"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}

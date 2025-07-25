@@ -1,9 +1,9 @@
 import logging
 from telegram.ext import Application
-from config import BOT_TOKEN
-from handlers.commands import get_commands_handlers
-from handlers.callbacks import get_callbacks_handlers
-from handlers.events import get_events_handlers
+from src.config import BOT_TOKEN
+from .handlers.commands import get_commands_handlers
+from .handlers.callbacks import get_callbacks_handlers
+from .handlers.events import get_events_handlers
 
 # Настройка логов
 logging.basicConfig(
