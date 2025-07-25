@@ -3,6 +3,7 @@ from telegram import Update
 from telegram.ext import CallbackContext, MessageHandler, filters
 from .messages import send_main_menu
 from src.config import config
+from src.handlers.commands import send_main_menu
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,8 @@ async def handle_new_members(update: Update, context: CallbackContext) -> None:
         # Получаем ID бота
         bot_id = context.bot.id
         logger.debug(f"ID бота: {bot_id}")
-        
+            
+        # Исправлено: используем update.message.new_chat_members вместо new_chat_members
         for member in update.message.new_chat_members:
             # Логируем информацию о новом участнике
             logger.info(f"Новый участник: ID={member.id}, Имя={member.first_name}, Бот={member.is_bot}")

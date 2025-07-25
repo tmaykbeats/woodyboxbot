@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 async def button_handler(update: Update, context: CallbackContext) -> None:
     """Обработка нажатий на кнопки"""
     query = update.callback_query
-    await query.answer()
+    await query.answer()  # Всегда подтверждаем нажатие кнопки
 
     if query.data == 'prices':
         services = "\n".join([f"- {s}: {p}" for s, p in config['services'].items()])
@@ -30,8 +30,8 @@ async def button_handler(update: Update, context: CallbackContext) -> None:
 
     elif query.data == 'products':  # Обработка товаров
         # Формируем список товаров с кнопками-ссылками
-        products_list = []
-        keyboard = []
+        products_text = []  # Для текста сообщения
+        keyboard = []       # Для кнопок
         
         for product in config['products']:
             # Создаем кнопку с названием товара и ссылкой
@@ -39,7 +39,7 @@ async def button_handler(update: Update, context: CallbackContext) -> None:
                 [InlineKeyboardButton(product['name'], url=product['url'])]
             )
             # Формируем текст для списка
-            products_list.append(f"• {product['name']}")
+            products_text.append(f"• {product['name']}")
         
         # Добавляем кнопку "Назад"
         keyboard.append(
@@ -47,10 +47,18 @@ async def button_handler(update: Update, context: CallbackContext) -> None:
         )
         
         await query.edit_message_text(
-            text="🎵 Наши товары:\n\n" + "\n".join(products_list),
+            text="🎵 Наши товары:\n\n" + "\n".join(products_text),  # Исправлено
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
-    
+        
+    elif query.data == 'info':
+        info_text = "\n".join([f"- {title}: {content}" for title, content in config['info_content'].items()])
+        keyboard = [[InlineKeyboardButton("← Назад", callback_data='back')]]
+        await query.edit_message_text(
+            text=f"ℹ️ Полезная информация:\n{info_text}",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+
     elif query.data == 'back':
         await send_main_menu(query.from_user.id, context)
 

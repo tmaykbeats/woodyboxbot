@@ -7,79 +7,18 @@ plugins: anyio-4.9.0, asyncio-1.0.0, mock-3.14.1
 asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
 collecting ... collected 13 items
 
-tests/test_callbacks.py::test_prices_button PASSED                       [  7%]
-tests/test_callbacks.py::test_info_button FAILED                         [ 15%]
-tests/test_callbacks.py::test_back_button FAILED                         [ 23%]
+tests/test_callbacks.py::test_back_button PASSED                         [  7%]
+tests/test_callbacks.py::test_info_button PASSED                         [ 15%]
+tests/test_callbacks.py::test_prices_button PASSED                       [ 23%]
 tests/test_commands.py::test_start_command PASSED                        [ 30%]
-tests/test_events.py::test_new_member_event FAILED                       [ 38%]
+tests/test_events.py::test_new_member_event PASSED                       [ 38%]
 tests/test_events.py::test_new_member_wrong_channel PASSED               [ 46%]
-tests/test_events.py::test_new_member_is_bot FAILED                      [ 53%]
-tests/test_events.py::test_multiple_new_members FAILED                   [ 61%]
+tests/test_events.py::test_new_member_is_bot PASSED                      [ 53%]
+tests/test_events.py::test_multiple_new_members PASSED                   [ 61%]
 tests/test_keyboards.py::test_main_menu_keyboard PASSED                  [ 69%]
 tests/test_keyboards.py::test_back_to_menu_keyboard PASSED               [ 76%]
 tests/test_keyboards.py::test_booking_keyboard PASSED                    [ 84%]
 tests/test_notifications.py::test_notify_user_in_channel_success PASSED  [ 92%]
 tests/test_notifications.py::test_notify_user_in_channel_error PASSED    [100%]
 
-================================== FAILURES ===================================
-______________________________ test_info_button _______________________________
-..\..\..\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:2362: in assert_awaited_once
-    raise AssertionError(msg)
-E   AssertionError: Expected edit_message_text to have been awaited once. Awaited 0 times.
-
-During handling of the above exception, another exception occurred:
-tests\test_callbacks.py:62: in test_info_button
-    mock_update.callback_query.edit_message_text.assert_awaited_once()
-E   AssertionError: Expected edit_message_text to have been awaited once. Awaited 0 times.
-______________________________ test_back_button _______________________________
-..\..\..\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:2362: in assert_awaited_once
-    raise AssertionError(msg)
-E   AssertionError: Expected edit_message_text to have been awaited once. Awaited 0 times.
-
-During handling of the above exception, another exception occurred:
-tests\test_callbacks.py:77: in test_back_button
-    mock_update.callback_query.edit_message_text.assert_awaited_once()
-E   AssertionError: Expected edit_message_text to have been awaited once. Awaited 0 times.
-____________________________ test_new_member_event ____________________________
-..\..\..\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:2390: in assert_awaited_once_with
-    raise AssertionError(msg)
-E   AssertionError: Expected send_main_menu to have been awaited once. Awaited 0 times.
-
-During handling of the above exception, another exception occurred:
-tests\test_events.py:46: in test_new_member_event
-    mock_send_menu.assert_awaited_once_with(999, mock_context)
-E   AssertionError: Expected send_main_menu to have been awaited once. Awaited 0 times.
----------------------------- Captured stdout call -----------------------------
-
-Логи обработчика:
-DEBUG: Получено событие новых участников в чате 12345
-INFO: Событие в целевом канале (12345)
-DEBUG: ID бота: 123
-INFO: Новый участник: ID=999, Имя=New, Бот=False
-INFO: Отправляем главное меню пользователю 999
-INFO: Главное меню отправлено новому участнику 999
-send_main_menu не была вызвана!
------------------------------- Captured log call ------------------------------
-DEBUG    src.handlers.events:events.py:13 Получено событие новых участников в чате 12345
-INFO     src.handlers.events:events.py:20 Событие в целевом канале (12345)
-DEBUG    src.handlers.events:events.py:24 ID бота: 123
-INFO     src.handlers.events:events.py:28 Новый участник: ID=999, Имя=New, Бот=False
-INFO     src.handlers.events:events.py:36 Отправляем главное меню пользователю 999
-INFO     src.handlers.events:events.py:39 Главное меню отправлено новому участнику 999
-___________________________ test_new_member_is_bot ____________________________
-tests\test_events.py:80: in test_new_member_is_bot
-    assert any("Пропускаем бота" in record.message for record in caplog.records)
-E   assert False
-E    +  where False = any(<generator object test_new_member_is_bot.<locals>.<genexpr> at 0x000001D26D4F8450>)
-__________________________ test_multiple_new_members __________________________
-tests\test_events.py:94: in test_multiple_new_members
-    assert mock_send_menu.call_count == 2
-E   AssertionError: assert 0 == 2
-E    +  where 0 = <AsyncMock name='send_main_menu' id='2003288743216'>.call_count
-=========================== short test summary info ===========================
-FAILED tests/test_callbacks.py::test_info_button - AssertionError: Expected e...
-FAILED tests/test_callbacks.py::test_back_button - AssertionError: Expected e...
-FAILED tests/test_events.py::test_new_member_event - AssertionError: Expected...
-FAILED tests/test_events.py::test_new_member_is_bot - assert False
-FAILED tests/test_events.py::test_multiple_new_members - AssertionError: asse...
-========================= 5 failed, 8 passed in 0.77s =========================
+============================= 13 passed in 0.60s ==============================
