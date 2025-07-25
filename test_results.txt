@@ -1,0 +1,283 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-8.4.0, pluggy-1.6.0
+rootdir: C:\Users\anton\Desktop\Windows_helpful_scripts\woodyboxbot
+configfile: pytest.ini
+plugins: anyio-4.9.0, asyncio-1.0.0, mock-3.14.1
+asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 13 items
+
+tests\test_callbacks.py FFF                                              [ 23%]
+tests\test_commands.py .                                                 [ 30%]
+tests\test_events.py F.FF                                                [ 61%]
+tests\test_keyboards.py F..                                              [ 84%]
+tests\test_notifications.py ..                                           [100%]
+
+================================== FAILURES ===================================
+_____________________________ test_prices_button ______________________________
+
+mock_update = <MagicMock id='2190708732800'>
+mock_context = <MagicMock id='2190710342720'>
+
+    @pytest.mark.asyncio
+    async def test_prices_button(mock_update, mock_context):
+        # Сохраняем оригинальный конфиг
+        original_config = callbacks_module.config
+    
+        try:
+            # Временная замена конфига
+            callbacks_module.config = {
+                'services': {"\u0422\u0435\u0441\u0442": "1000\u20bd"},
+                'booking_text': "Бронирование",
+                'info_content': {}
+            }
+    
+            # Устанавливаем данные callback
+            mock_update.callback_query.data = 'prices'
+>           await button_handler(mock_update, mock_context)
+
+tests\test_callbacks.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+update = <MagicMock id='2190708732800'>
+context = <MagicMock id='2190710342720'>
+
+    async def button_handler(update: Update, context: CallbackContext) -> None:
+        """Обработка нажатий на кнопки"""
+        query = update.callback_query
+        await query.answer()
+    
+        if query.data == 'prices':
+            services = "\n".join([f"- {s}: {p}" for s, p in config['services'].items()])
+            keyboard = [
+>               [InlineKeyboardButton("\U0001f4c5 \u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c", url=config['booking_link'])],
+                                                             ^^^^^^^^^^^^^^^^^^^^^^
+                [InlineKeyboardButton("\u2190 \u041d\u0430\u0437\u0430\u0434", callback_data='back')]
+            ]
+E           KeyError: 'booking_link'
+
+src\handlers\callbacks.py:22: KeyError
+______________________________ test_info_button _______________________________
+
+self = <AsyncMock name='mock.callback_query.edit_message_text' id='2190710351792'>
+
+    def assert_awaited_once(self):
+        """
+        Assert that the mock was awaited exactly once.
+        """
+        if not self.await_count == 1:
+            msg = (f"Expected {self._mock_name or 'mock'} to have been awaited once."
+                   f" Awaited {self.await_count} times.")
+>           raise AssertionError(msg)
+E           AssertionError: Expected edit_message_text to have been awaited once. Awaited 0 times.
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:2362: AssertionError
+
+During handling of the above exception, another exception occurred:
+
+mock_update = <MagicMock id='2190710348432'>
+mock_context = <MagicMock id='2190710353136'>
+
+    @pytest.mark.asyncio
+    async def test_info_button(mock_update, mock_context):
+        # Сохраняем оригинальный конфиг
+        original_config = callbacks_module.config
+    
+        try:
+            # Временная замена конфига
+            callbacks_module.config = {
+                'info_content': {"Тест": "https://example.com"},
+                'services': {}
+            }
+    
+            # Устанавливаем данные callback
+            mock_update.callback_query.data = 'info'
+            await button_handler(mock_update, mock_context)
+    
+>           mock_update.callback_query.edit_message_text.assert_awaited_once()
+E           AssertionError: Expected edit_message_text to have been awaited once. Awaited 0 times.
+
+tests\test_callbacks.py:52: AssertionError
+______________________________ test_back_button _______________________________
+
+self = <AsyncMock name='mock.callback_query.edit_message_text' id='2190711964736'>
+
+    def assert_awaited_once(self):
+        """
+        Assert that the mock was awaited exactly once.
+        """
+        if not self.await_count == 1:
+            msg = (f"Expected {self._mock_name or 'mock'} to have been awaited once."
+                   f" Awaited {self.await_count} times.")
+>           raise AssertionError(msg)
+E           AssertionError: Expected edit_message_text to have been awaited once. Awaited 0 times.
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:2362: AssertionError
+
+During handling of the above exception, another exception occurred:
+
+mock_update = <MagicMock id='2190710357504'>
+mock_context = <MagicMock id='2190711966080'>
+
+    @pytest.mark.asyncio
+    async def test_back_button(mock_update, mock_context):
+        mock_update.callback_query.data = 'back'
+        await button_handler(mock_update, mock_context)
+    
+>       mock_update.callback_query.edit_message_text.assert_awaited_once()
+E       AssertionError: Expected edit_message_text to have been awaited once. Awaited 0 times.
+
+tests\test_callbacks.py:67: AssertionError
+____________________________ test_new_member_event ____________________________
+
+self = <AsyncMock name='send_main_menu' id='2190711976832'>
+args = (999, <MagicMock id='2190711867776'>), kwargs = {}
+msg = 'Expected send_main_menu to have been awaited once. Awaited 0 times.'
+
+    def assert_awaited_once_with(self, /, *args, **kwargs):
+        """
+        Assert that the mock was awaited exactly once and with the specified
+        arguments.
+        """
+        if not self.await_count == 1:
+            msg = (f"Expected {self._mock_name or 'mock'} to have been awaited once."
+                   f" Awaited {self.await_count} times.")
+>           raise AssertionError(msg)
+E           AssertionError: Expected send_main_menu to have been awaited once. Awaited 0 times.
+
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:2390: AssertionError
+
+During handling of the above exception, another exception occurred:
+
+mock_update = <MagicMock id='2190711979520'>
+mock_context = <MagicMock id='2190711867776'>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FE1071F6F0>
+caplog = <_pytest.logging.LogCaptureFixture object at 0x000001FE109BF230>
+
+    @pytest.mark.asyncio
+    async def test_new_member_event(mock_update: MagicMock, mock_context: MagicMock, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+        # Устанавливаем уровень логирования для захвата DEBUG
+        caplog.set_level("DEBUG")
+    
+        # Устанавливаем ID канала
+        monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
+    
+        # Настраиваем чат прямо в message
+        mock_update.message.chat.id = 12345
+    
+        # Убедимся, что бот не пропускает себя
+        mock_context.bot.id = 123
+    
+        # Создаем нового пользователя
+        new_user = MagicMock()
+        new_user.id = 999
+        new_user.first_name = "New"
+        new_user.is_bot = False
+    
+        # Устанавливаем новых участников
+        mock_update.message.new_chat_members = [new_user]
+    
+        with patch('handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+            # Запускаем обработчик
+            await handle_new_members(mock_update, mock_context)
+    
+            # Выводим все логи
+            print("\nЛоги обработчика:")
+            for record in caplog.records:
+                print(f"{record.levelname}: {record.message}")
+    
+            # Проверяем вызов
+            if mock_send_menu.await_count == 0:
+                print("send_main_menu не была вызвана!")
+            else:
+                print(f"send_main_menu вызвана {mock_send_menu.await_count} раз")
+    
+            # Исправлено: проверка позиционных аргументов
+>           mock_send_menu.assert_awaited_once_with(999, mock_context)
+E           AssertionError: Expected send_main_menu to have been awaited once. Awaited 0 times.
+
+tests\test_events.py:46: AssertionError
+---------------------------- Captured stdout call -----------------------------
+
+Логи обработчика:
+DEBUG: Получено событие новых участников в чате 12345
+INFO: Событие в целевом канале (12345)
+DEBUG: ID бота: 123
+INFO: Новый участник: ID=999, Имя=New, Бот=False
+INFO: Отправляем главное меню пользователю 999
+INFO: Главное меню отправлено новому участнику 999
+send_main_menu не была вызвана!
+------------------------------ Captured log call ------------------------------
+DEBUG    src.handlers.events:events.py:13 Получено событие новых участников в чате 12345
+INFO     src.handlers.events:events.py:20 Событие в целевом канале (12345)
+DEBUG    src.handlers.events:events.py:24 ID бота: 123
+INFO     src.handlers.events:events.py:28 Новый участник: ID=999, Имя=New, Бот=False
+INFO     src.handlers.events:events.py:36 Отправляем главное меню пользователю 999
+INFO     src.handlers.events:events.py:39 Главное меню отправлено новому участнику 999
+___________________________ test_new_member_is_bot ____________________________
+
+mock_update = <MagicMock id='2190711872816'>
+mock_context = <MagicMock id='2190711875504'>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FE10908290>
+caplog = <_pytest.logging.LogCaptureFixture object at 0x000001FE1080D6D0>
+
+    @pytest.mark.asyncio
+    async def test_new_member_is_bot(mock_update, mock_context, monkeypatch, caplog):
+        monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
+        mock_update.message.chat.id = 12345
+    
+        # Бот добавляет самого себя
+        bot_user = MagicMock()
+        bot_user.id = mock_context.bot.id
+        bot_user.is_bot = True
+        mock_update.message.new_chat_members = [bot_user]
+    
+        with patch('handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+            await handle_new_members(mock_update, mock_context)
+            mock_send_menu.assert_not_awaited()
+>           assert "Пропускаем бота" in caplog.text
+E           AssertionError: assert 'Пропускаем бота' in ''
+E            +  where '' = <_pytest.logging.LogCaptureFixture object at 0x000001FE1080D6D0>.text
+
+tests\test_events.py:80: AssertionError
+__________________________ test_multiple_new_members __________________________
+
+mock_update = <MagicMock id='2190711870800'>
+mock_context = <MagicMock id='2190711876176'>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FE1095D480>
+
+    @pytest.mark.asyncio
+    async def test_multiple_new_members(mock_update, mock_context, monkeypatch):
+        monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
+        mock_update.message.chat.id = 12345
+    
+        user1 = MagicMock(id=101, first_name="User1", is_bot=False)
+        user2 = MagicMock(id=102, first_name="User2", is_bot=False)
+        mock_update.message.new_chat_members = [user1, user2]
+    
+        with patch('handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+            await handle_new_members(mock_update, mock_context)
+>           assert mock_send_menu.call_count == 2
+E           AssertionError: assert 0 == 2
+E            +  where 0 = <AsyncMock name='send_main_menu' id='2190711879872'>.call_count
+
+tests\test_events.py:94: AssertionError
+___________________________ test_main_menu_keyboard ___________________________
+
+    def test_main_menu_keyboard():
+        keyboard = main_menu_keyboard()
+        buttons = keyboard.inline_keyboard
+    
+>       assert len(buttons) == 3
+E       AssertionError: assert 4 == 3
+E        +  where 4 = len(((InlineKeyboardButton(callback_data='prices', text='\U0001f4b0 \u041f\u0440\u0430\u0439\u0441-\u043b\u0438\u0441\u0442'),), (InlineKeyboardButton(callback_data='info', tex...ducts', text='\U0001f6d2 \u0422\u043e\u0432\u0430\u0440\u044b'),), (InlineKeyboardButton(text='\U0001f4de \u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 \u043d\u0430\u043c\u0438', url='https://t.me/your_studio_manager'),)))
+
+tests\test_keyboards.py:7: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_callbacks.py::test_prices_button - KeyError: 'booking_link'
+FAILED tests/test_callbacks.py::test_info_button - AssertionError: Expected e...
+FAILED tests/test_callbacks.py::test_back_button - AssertionError: Expected e...
+FAILED tests/test_events.py::test_new_member_event - AssertionError: Expected...
+FAILED tests/test_events.py::test_new_member_is_bot - AssertionError: assert ...
+FAILED tests/test_events.py::test_multiple_new_members - AssertionError: asse...
+FAILED tests/test_keyboards.py::test_main_menu_keyboard - AssertionError: ass...
+========================= 7 failed, 6 passed in 0.74s =========================

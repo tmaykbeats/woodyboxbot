@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-8.4.0, pluggy-1.6.0
+rootdir: C:\Users\anton\Desktop\Windows_helpful_scripts\woodyboxbot
+configfile: pytest.ini
+plugins: anyio-4.9.0, asyncio-1.0.0, mock-3.14.1
+asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 13 items / 1 error
+
+=================================== ERRORS ====================================
+______________________ ERROR collecting test_results.txt ______________________
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+<frozen codecs>:325: in decode
+    ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd1 in position 1179: invalid continuation byte
+=========================== short test summary info ===========================
+ERROR test_results.txt - UnicodeDecodeError: 'utf-8' codec can't decode byte ...
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 0.62s ===============================
