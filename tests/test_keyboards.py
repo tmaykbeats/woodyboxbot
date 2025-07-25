@@ -7,7 +7,7 @@ def test_main_menu_keyboard():
     assert len(buttons) == 4
     assert buttons[0][0].text == "💰 Прайс-лист"
     assert buttons[1][0].text == "ℹ️ Полезная информация"
-    assert buttons[2][0].text == "🛍️ Товары"
+    assert buttons[2][0].text == "🛒 Товары"
     assert buttons[3][0].text == "📞 Связаться с нами"
 
 def test_back_to_menu_keyboard():

@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import patch, AsyncMock
 from handlers.callbacks import button_handler
 import handlers.callbacks as callbacks_module  # Единый псевдоним для модуля
+from telegram import InlineKeyboardButton
 
 @pytest.mark.asyncio
 async def test_prices_button(mock_update, mock_context):
@@ -43,9 +44,17 @@ async def test_info_button(mock_update, mock_context):
         # Временная замена конфига
         callbacks_module.config = {
             'info_content': {"Тест": "https://example.com"},
-            'services': {}
+            'services': {},
+            'booking_link': "https://booking.com",  # Добавить
+            'booking_text': "Бронирование"          # Добавить
         }
-        
+        # Мокировать создание кнопок
+        with patch('handlers.callbacks.InlineKeyboardMarkup') as mock_markup, \
+            patch('handlers.callbacks.InlineKeyboardButton') as mock_button:
+            
+            mock_button.return_value = "mocked_button"
+            mock_markup.return_value.inline_keyboard = [["mocked_button"]]
+            
         # Устанавливаем данные callback
         mock_update.callback_query.data = 'info'
         await button_handler(mock_update, mock_context)

@@ -45,6 +45,6 @@ def mock_context():
     chat_user = MagicMock()
     chat_user.id = 123
     chat_user.username = "test_user"
-    context.bot.get_chat = AsyncMock(return_value=chat_user)
+    context.bot.get_chat = AsyncMock(return_value=MagicMock(username="test_user"))
     
     return context
