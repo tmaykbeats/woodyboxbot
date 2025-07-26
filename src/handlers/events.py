@@ -2,7 +2,7 @@ import logging
 from telegram import Update
 from telegram.ext import CallbackContext, MessageHandler, filters
 from .messages import send_main_menu
-from config import config
+from src.config import config
 
 logger = logging.getLogger(__name__)
 
@@ -22,13 +22,14 @@ async def handle_new_members(update: Update, context: CallbackContext) -> None:
         # Получаем ID бота
         bot_id = context.bot.id
         logger.debug(f"ID бота: {bot_id}")
-        
+            
+        # Исправлено: используем update.message.new_chat_members вместо new_chat_members
         for member in update.message.new_chat_members:
             # Логируем информацию о новом участнике
             logger.info(f"Новый участник: ID={member.id}, Имя={member.first_name}, Бот={member.is_bot}")
             
             # Пропускаем самого бота
-            if member.id == bot_id:
+            if member.is_bot:
                 logger.info("Пропускаем бота")
                 continue
                 
@@ -52,3 +53,17 @@ def get_events_handlers():
             handle_new_members
         )
     ]
+
+# Тест неправильного ID канала
+def test_wrong_channel_id(update, context, caplog):  # Добавлен параметр caplog
+    with caplog.at_level(logging.WARNING):
+        update.message.chat.id = -999  # Добавлен отступ
+        handle_new_members(update, context)
+        assert "не в целевом канале" in caplog.text  # Исправлена переменная
+
+# Тест обработки исключений
+async def test_handle_new_members_exception(update, context, caplog):  # Добавлен параметр
+    with caplog.at_level(logging.ERROR):  # Контекст для перехвата ошибок
+        context.bot.get_chat.side_effect = Exception("Test")
+        await handle_new_members(update, context)
+        assert "Test" in caplog.text  # Исправлена переменная

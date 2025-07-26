@@ -1,4 +1,8 @@
 import pytest
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from unittest.mock import MagicMock, AsyncMock
 
 @pytest.fixture
@@ -11,6 +15,11 @@ def mock_update():
     user.first_name = "Test"
     user.is_bot = False
     update.effective_user = user
+    
+    # Настраиваем effective_chat
+    chat = MagicMock()
+    chat.id = 123
+    update.effective_chat = chat
     
     # Настраиваем callback_query с AsyncMock
     callback_query = AsyncMock()
@@ -32,15 +41,12 @@ def mock_update():
 def mock_context():
     context = MagicMock()
     context.bot = MagicMock()
-    context.bot.username = "test_bot"
-    context.bot.id = 123  # ID бота
+    context.bot.get_chat = AsyncMock(return_value=MagicMock(
+        id=123, 
+        username="test_user",
+        first_name="Test"
+    ))
     context.bot.send_message = AsyncMock()
     context.bot.edit_message_text = AsyncMock()
-    
-    # Настраиваем get_chat
-    chat_user = MagicMock()
-    chat_user.id = 123
-    chat_user.username = "test_user"
-    context.bot.get_chat = AsyncMock(return_value=chat_user)
-    
+    context.bot.answer_callback_query = AsyncMock()
     return context

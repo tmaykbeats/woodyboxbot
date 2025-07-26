@@ -19,12 +19,14 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-asyncio pytest-mock  # Только для тестов
-        pip install python-telegram-bot==22.3 dotenv  # Основные зависимости
+        pip install pytest pytest-asyncio pytest-mock
+        pip install python-telegram-bot==22.3 dotenv
+        pip install -e .  # Ключевое изменение! Установка проекта в режиме разработки
 
     - name: Run tests
       env:
         CHANNEL_ID: "-1001234567890"  # Тестовый ID канала
         ADMIN_ID: "654321"            # Тестовый ID администратора
       run: |
-        pytest -v tests/  # Подробный вывод тестов
+        cd src
+        pytest -v ../tests/  # Подробный вывод тестов

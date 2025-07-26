@@ -1,9 +1,15 @@
+import os
+import sys
 import logging
+
+# Добавляем корень проекта в sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from telegram.ext import Application
-from config import BOT_TOKEN
-from handlers.commands import get_commands_handlers
-from handlers.callbacks import get_callbacks_handlers
-from handlers.events import get_events_handlers
+from src.config import BOT_TOKEN
+from src.handlers.commands import get_commands_handlers  # Исправленный импорт
+from src.handlers.callbacks import get_callbacks_handlers  # Исправленный импорт
+from src.handlers.events import get_events_handlers  # Исправленный импорт
 
 # Настройка логов
 logging.basicConfig(

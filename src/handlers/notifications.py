@@ -1,7 +1,7 @@
 import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
-from config import CHANNEL_ID, config
+from src.config import CHANNEL_ID, config
 
 logger = logging.getLogger(__name__)
 

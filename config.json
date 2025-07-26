@@ -10,5 +10,35 @@
     "FAQ": "https://example.com/faq"
   },
   "booking_text": "Для бронирования времени:",
-  "booking_link": "https://t.me/your_studio_manager"
+  "booking_link": "https://t.me/your_studio_manager",
+  "products": [
+    {
+      "name": "Час студийной работы",
+      "url": "https://vk.com/market/product/chas-studiynoy-raboty-82729675-8107138"
+    },
+    {
+      "name": "Сведение + мастеринг",
+      "url": "https://vk.com/market/product/svedenie-mastering-82729675-8107145"
+    },
+    {
+      "name": "Запись + сведение",
+      "url": "https://vk.com/market/product/zapissvedenie-82729675-7513637"
+    },
+    {
+      "name": "Гострайтинг",
+      "url": "https://vk.com/market/product/gostrayting-82729675-7513639"
+    },
+    {
+      "name": "Дизайн",
+      "url": "https://vk.com/market/product/dizayn-82729675-7513648"
+    },
+    {
+      "name": "Дистрибуция",
+      "url": "https://vk.com/market/product/distributsia-82729675-7513644"
+    },
+    {
+      "name": "Битмейкинг",
+      "url": "https://vk.com/market/product/bitmeyking-82729675-7513640"
+    }
+  ]  
 }

@@ -1,11 +1,12 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from config import config
+from src.config import config
 
 def main_menu_keyboard():
     """Клавиатура главного меню"""
     keyboard = [
         [InlineKeyboardButton("💰 Прайс-лист", callback_data='prices')],
         [InlineKeyboardButton("ℹ️ Полезная информация", callback_data='info')],
+        [InlineKeyboardButton("🛒 Товары", callback_data='products')],  # Новая кнопка
         [InlineKeyboardButton("📞 Связаться с нами", url=config['booking_link'])]
     ]
     return InlineKeyboardMarkup(keyboard)
