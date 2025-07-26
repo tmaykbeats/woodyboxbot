@@ -2,7 +2,7 @@ import pytest
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))  # Добавить эту строку
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from unittest.mock import MagicMock, AsyncMock
 
 @pytest.fixture
@@ -15,6 +15,11 @@ def mock_update():
     user.first_name = "Test"
     user.is_bot = False
     update.effective_user = user
+    
+    # Настраиваем effective_chat
+    chat = MagicMock()
+    chat.id = 123
+    update.effective_chat = chat
     
     # Настраиваем callback_query с AsyncMock
     callback_query = AsyncMock()

@@ -23,3 +23,12 @@ def test_booking_keyboard():
     
     assert len(buttons) == 1
     assert buttons[0][0].text == "📅 Забронировать"
+
+def test_main_menu_keyboard_contact_button():
+    keyboard = main_menu_keyboard()
+    buttons = keyboard.inline_keyboard
+    
+    contact_button = buttons[3][0]
+    assert contact_button.text == "📞 Связаться с нами"
+    assert contact_button.url  # Проверяем что URL установлен
+    assert "http" in contact_button.url

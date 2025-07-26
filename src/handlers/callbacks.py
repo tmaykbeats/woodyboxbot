@@ -17,7 +17,7 @@ async def button_handler(update: Update, context: CallbackContext) -> None:
     await query.answer()  # Всегда подтверждаем нажатие кнопки
 
     if query.data == 'prices':
-        services = "\n".join([f"- {s}: {p}" for s, p in config['services'].items()])
+        services = "\n".join([f"- {s}: {p}" for s, p in config['services'].items()]) if config['services'] else "Услуги не указаны"
         keyboard = [
             [InlineKeyboardButton("📅 Забронировать", url=config['booking_link'])],
             [InlineKeyboardButton("← Назад", callback_data='back')]

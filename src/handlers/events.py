@@ -30,7 +30,7 @@ async def handle_new_members(update: Update, context: CallbackContext) -> None:
             logger.info(f"Новый участник: ID={member.id}, Имя={member.first_name}, Бот={member.is_bot}")
             
             # Пропускаем самого бота
-            if member.id == bot_id:
+            if member.is_bot:
                 logger.info("Пропускаем бота")
                 continue
                 

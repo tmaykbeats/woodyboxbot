@@ -73,3 +73,45 @@ async def test_multiple_new_members(mock_update, mock_context, monkeypatch):
     with patch('src.handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
         await handle_new_members(mock_update, mock_context)
         assert mock_send_menu.await_count == 2
+
+@pytest.mark.asyncio
+async def test_new_member_send_menu_error(mock_update, mock_context, monkeypatch, caplog):
+    monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
+    mock_update.message.chat.id = 12345
+    mock_context.bot.id = 123
+    
+    new_user = MagicMock()
+    new_user.id = 999
+    new_user.first_name = "New"
+    new_user.is_bot = False
+    mock_update.message.new_chat_members = [new_user]
+    
+    with patch('src.handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+        mock_send_menu.side_effect = Exception("Send error")
+        await handle_new_members(mock_update, mock_context)
+        
+        assert "Ошибка при отправке меню: Send error" in caplog.text
+
+@pytest.mark.asyncio
+async def test_multiple_bots_added(mock_update, mock_context, monkeypatch):
+    monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
+    mock_update.message.chat.id = 12345
+    
+    bot1 = MagicMock(id=101, is_bot=True)
+    bot2 = MagicMock(id=102, is_bot=True)
+    mock_update.message.new_chat_members = [bot1, bot2]
+    
+    with patch('src.handlers.events.send_main_menu', new_callable=AsyncMock) as mock_send_menu:
+        await handle_new_members(mock_update, mock_context)
+        mock_send_menu.assert_not_awaited()
+
+@pytest.mark.asyncio
+async def test_send_menu_error(mock_update, mock_context, monkeypatch, caplog):
+    monkeypatch.setitem(config, 'CHANNEL_ID', 12345)
+    mock_update.message.chat.id = 12345
+    new_user = MagicMock(id=999, is_bot=False)
+    mock_update.message.new_chat_members = [new_user]
+    
+    with patch('src.handlers.events.send_main_menu', AsyncMock(side_effect=Exception("Test error"))):
+        await handle_new_members(mock_update, mock_context)
+        assert "Ошибка при отправке меню" in caplog.text
