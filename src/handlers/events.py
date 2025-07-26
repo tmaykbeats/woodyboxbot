@@ -3,7 +3,6 @@ from telegram import Update
 from telegram.ext import CallbackContext, MessageHandler, filters
 from .messages import send_main_menu
 from src.config import config
-from src.handlers.commands import send_main_menu
 
 logger = logging.getLogger(__name__)
 
@@ -54,3 +53,17 @@ def get_events_handlers():
             handle_new_members
         )
     ]
+
+# Тест неправильного ID канала
+def test_wrong_channel_id(update, context, caplog):  # Добавлен параметр caplog
+    with caplog.at_level(logging.WARNING):
+        update.message.chat.id = -999  # Добавлен отступ
+        handle_new_members(update, context)
+        assert "не в целевом канале" in caplog.text  # Исправлена переменная
+
+# Тест обработки исключений
+async def test_handle_new_members_exception(update, context, caplog):  # Добавлен параметр
+    with caplog.at_level(logging.ERROR):  # Контекст для перехвата ошибок
+        context.bot.get_chat.side_effect = Exception("Test")
+        await handle_new_members(update, context)
+        assert "Test" in caplog.text  # Исправлена переменная
